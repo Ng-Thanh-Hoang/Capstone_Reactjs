@@ -1,0 +1,6 @@
+@mixin mText($fz: $text-base, $fw: $fw-normal, $c: $text-dark) {
+    //default params (giá trị mặc định)
+    font-size: $fz;
+    color: $c;
+    font-weight: $fw;
+}
