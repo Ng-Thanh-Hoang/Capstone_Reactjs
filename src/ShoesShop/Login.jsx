@@ -2,6 +2,7 @@ import React from 'react'
 import { useFormik } from 'formik'
 import { NavLink, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import LoginFacebook from './LoginFacebook'
 
 const Login = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Login = () => {
             } catch (error) {
                 console.error('Login failed:', error);
                 alert('Login failed: Please check your credentials and try again.');
-            }
+            }0
         }
     });
     return (
@@ -52,7 +53,7 @@ const Login = () => {
                     <NavLink to='/register' className='text-decoration-none'>Register now ?</NavLink>
                     <button className='ms-4 btn my-2 rounded rounded-pill text-white px-4 py-1.5' style={{ background: '#6200ee' }}>LOGIN</button>
                 </div>
-                <button className='btn btn-primary rounded rounded-4'><i class="fab fa-facebook me-2"></i> Continue with Facebook</button>
+                <LoginFacebook/>
             </form>
         </div>
     )

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Profile = () => {
+    
     return (
         <div className='profile container mt-5'>
             <h1 className='ps-4 w-50'>Profile</h1>
