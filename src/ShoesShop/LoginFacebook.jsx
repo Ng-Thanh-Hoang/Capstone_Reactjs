@@ -1,8 +1,9 @@
 import axios from 'axios';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FacebookLogin from 'react-facebook-login';
+import { useNavigate } from 'react-router-dom';
 export default function LoginFacebook() {
-
+    const navigate = useNavigate();
     const responseFacebook = (response) => {
         console.log(response);
         axios({
@@ -12,18 +13,18 @@ export default function LoginFacebook() {
                 facebookToken: response.accessToken
             }
 
-        }).then(res => {
-
-            localStorage.getItem("accessToken", res.data.content.accessToken);
-        })
+        }),
+        navigate('/profile')
+        localStorage.setItem("accessToken", response.accessToken);
     };
+
     return (
         <div>
             <FacebookLogin
-                appId="529796339530041"
+                appId="1087944499590107"
                 autoLoad={true}
                 fields="name,email,picture"
-                callback={responseFacebook} />,
+                callback={responseFacebook} />
         </div>
     );
 }

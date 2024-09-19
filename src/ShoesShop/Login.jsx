@@ -24,14 +24,12 @@ const Login = () => {
                 const userLogin = JSON.stringify(res.data.content);
                 localStorage.setItem('accessToken', token);
                 localStorage.setItem('userLogin', userLogin);
-
-
                 navigate('/profile');
 
             } catch (error) {
                 console.error('Login failed:', error);
                 alert('Login failed: Please check your credentials and try again.');
-            }0
+            }
         }
     });
     return (

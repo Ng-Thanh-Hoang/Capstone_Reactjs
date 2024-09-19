@@ -1,7 +1,22 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { http } from '../util/setting';
 
 const Profile = () => {
-    
+    const [profile, setProfile] = useState({});
+    const navigate = useNavigate();
+    const getProfileApi = async () => {
+            const res = await http.post('/api/Users/getProfile');
+            console.log(res.data.content);
+            //Đưa vào state
+            setProfile(res.data.content);
+    }
+
+    useEffect(() => {
+        getProfileApi();
+    }, [])
     return (
         <div className='profile container mt-5'>
             <h1 className='ps-4 w-50'>Profile</h1>
@@ -13,24 +28,24 @@ const Profile = () => {
                     <div className="col-4 me-5 mt-4">
                         <div className="form-group" style={{ width: 443 }}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id='email' name='email' placeholder='email' className='form-control' />
+                            <input type="email" id='email' name='email' placeholder='email' className='form-control' value={profile.email}/>
                         </div>
                         <div className="form-group mt-4" style={{ width: 443 }}>
                             <label htmlFor="phone">Phone</label>
-                            <input id='phone' type="phone" name='phone' placeholder='phone' className='form-control' />
+                            <input id='phone' type="phone" name='phone' placeholder='phone' className='form-control' value={profile.phone} />
                         </div>
                     </div>
                     <div className="col-4 mt-4">
                         <div className="form-group" style={{ width: 443 }}>
                             <label htmlFor="name">Name</label>
-                            <input type="name" id='name' name='name' placeholder='name' className='form-control' />
+                            <input type="name" id='name' name='name' placeholder='name' className='form-control' value={profile.name} />
                         </div>
                         <div className="form-group mt-4" style={{ width: 443 }}>
                             <label htmlFor="password">Password</label>
-                            <input id='password' type="password" name='password' placeholder='password' className='form-control' />
+                            <input id='password' type="password" name='password' placeholder='password' className='form-control' value={profile.password} />
                         </div>
                         <div className='group d-flex mt-2' style={{ width: 443 }}>
-                            <div className="gender">
+                            <div className="gender" value={profile.gender}>
                                 <label className="title" htmlFor="gender">Gender</label>
                                 <input className="form-check-input mx-4" type="radio" name="flexRadioDefault" defaultValue="true" />
                                 <input className="form-check-input mx-2" type="radio" name="flexRadioDefault" defaultValue="false" />
