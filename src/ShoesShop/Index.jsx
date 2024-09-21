@@ -1,10 +1,19 @@
-import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import '../sass/index.scss'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { NavLink, Outlet } from 'react-router-dom';
+import '../sass/index.scss';
+import { useSelector } from 'react-redux';
 
 const Index = () => {
-  const cartStore = useSelector(state => state.cartSliceReducer.cart)
+  const cartStore = useSelector(state => state.cartSliceReducer.cart);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken'); // Kiểm tra token trong localStorage
+    if (token) {
+      setIsLoggedIn(true); // Đặt trạng thái đăng nhập thành true nếu có token
+    }
+  }, []);
+
   return (
     <>
       <header className='container'>
@@ -14,15 +23,23 @@ const Index = () => {
           </a>
           <div className="menu">
             <div className="form-group text-white d-inline">
-              <i class="fa fa-search"></i>
+              <i className="fa fa-search"></i>
               <NavLink to='/search' className='text-decoration-none ms-2'>Search</NavLink>
             </div>
             <NavLink to='/carts' className="form-group text-white d-inline ms-2">
-              <i class="fa fa-shopping-cart text-secondary"></i>
+              <i className="fa fa-shopping-cart text-secondary"></i>
               ({cartStore.length})
             </NavLink>
-            <NavLink to='/login' className='ms-2 text-decoration-none text-white'>Login</NavLink>
-            <NavLink to='/register' className='ms-2 text-decoration-none text-white'>Register</NavLink>
+
+            {/* Kiểm tra trạng thái đăng nhập và thay đổi giao diện */}
+            {isLoggedIn ? (
+              <NavLink to='/profile' className='ms-2 text-decoration-none text-white'>Profile</NavLink>
+            ) : (
+              <>
+                <NavLink to='/login' className='ms-2 text-decoration-none text-white'>Login</NavLink>
+                <NavLink to='/register' className='ms-2 text-decoration-none text-white'>Register</NavLink>
+              </>
+            )}
           </div>
         </header>
         <header className='header-nav pt-2'>
@@ -63,7 +80,7 @@ const Index = () => {
         <p className='py-3'> © 2022 Cybersoft All Rights Reserved | Design Theme by Trương Tấn Khải.</p>
       </footer>
     </>
-  )
+  );
 }
 
 export default Index

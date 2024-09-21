@@ -10,7 +10,12 @@ const Carts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(cartStore)
+  console.log(cartStore);
+
+  // Lưu giỏ hàng vào localStorage mỗi khi cartStore thay đổi
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartStore)); // Lưu giỏ hàng vào localStorage
+  }, [cartStore]);
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('accessToken'); // Kiểm tra token trong localStorage
@@ -21,18 +26,16 @@ const Carts = () => {
 
   const handleOrderSubmit = async () => {
     try {
-      const userLogin = JSON.parse(localStorage.getItem('userLogin'))
-      console.log(userLogin)
+      const userLogin = JSON.parse(localStorage.getItem('userLogin'));
+      console.log(userLogin);
       const orderData = {
-        orderDetail: cartStore.map((item) => (
-            {
-              productId: item.id,
-              quantity: item.quantity,
-            }
-        )),
-        email: userLogin.email
+        orderDetail: cartStore.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+        email: userLogin.email,
       };
-      console.log(orderData)
+      console.log(orderData);
 
       const response = await axios.post('https://shop.cyberlearn.vn/api/Users/order', orderData);
 
