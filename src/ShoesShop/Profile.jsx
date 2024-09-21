@@ -2,16 +2,48 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { http } from '../util/setting';
 
 const Profile = () => {
-    const [profile, setProfile] = useState({});
     const navigate = useNavigate();
+    const [profile, setProfile] = useState({
+        email: '',
+        phone: '',
+        name: '',
+        password:'',
+        gender: true,
+    });
+
     const getProfileApi = async () => {
-            const res = await http.post('/api/Users/getProfile');
-            console.log(res.data.content);
-            //Đưa vào state
-            setProfile(res.data.content);
+        try {
+            const getToken = localStorage.getItem('accessToken')
+            console.log(getToken);
+            if (getToken) {
+                const res = await axios({
+                    url: "https://shop.cyberlearn.vn/api/Users/facebooklogin",
+                    method: "POST",
+                    data: {
+                        facebookToken: getToken
+                    },
+                })
+                const result = res.data.content
+                console.log('ketQua', result);
+                if (result.accessToken) {
+                    // Lấy thông tin profile
+                    const resProfile = await axios({
+                        url: "https://shop.cyberlearn.vn/api/Users/getProfile",
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${result.accessToken}`
+                        },
+                    });
+                    console.log('Thông tin tài khoản:', resProfile.data.content);
+                    setProfile(resProfile.data.content)
+                }
+            }
+        } catch (err) {
+            alert('Không thể lấy được profile account này!')
+            console.log(err)
+        }
     }
 
     useEffect(() => {
@@ -28,7 +60,7 @@ const Profile = () => {
                     <div className="col-4 me-5 mt-4">
                         <div className="form-group" style={{ width: 443 }}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id='email' name='email' placeholder='email' className='form-control' value={profile.email}/>
+                            <input type="email" id='email' name='email' placeholder='email' className='form-control' value={profile.email} />
                         </div>
                         <div className="form-group mt-4" style={{ width: 443 }}>
                             <label htmlFor="phone">Phone</label>
@@ -47,8 +79,8 @@ const Profile = () => {
                         <div className='group d-flex mt-2' style={{ width: 443 }}>
                             <div className="gender" value={profile.gender}>
                                 <label className="title" htmlFor="gender">Gender</label>
-                                <input className="form-check-input mx-4" type="radio" name="flexRadioDefault" defaultValue="true" />
-                                <input className="form-check-input mx-2" type="radio" name="flexRadioDefault" defaultValue="false" />
+                                <input className="form-check-input mx-4" type="radio" name="flexRadioDefault" value="true" />
+                                <input className="form-check-input mx-2" type="radio" name="flexRadioDefault" value="false" />
                                 <br />
                                 <label className="title ms-5 ps-3" htmlFor="gender">Male</label>
                                 <label className="title ms-2" htmlFor="gender">Female</label>

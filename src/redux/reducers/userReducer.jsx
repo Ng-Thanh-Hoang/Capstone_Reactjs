@@ -7,7 +7,7 @@ const initialState = {
         "passwordComfirm":"",
         "name": "",
         "gender": true,
-        "phone": ""
+        "phone": "",
     }
 }
 

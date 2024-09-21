@@ -57,6 +57,7 @@ const Register = () => {
             try {
                 const res = await axios.post('https://shop.cyberlearn.vn/api/Users/signup', userRegister);
                 alert('Đăng ký thành công');
+                localStorage.setItem('',)
                 navigate('/profile');
             } catch (err) {
                 console.log(err);

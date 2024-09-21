@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { changeQuantityProductAction, deleteProductAction } from '../redux/reducers/cartReducer';
 import { Table } from 'antd';
 import axios from 'axios';
@@ -8,30 +8,37 @@ import axios from 'axios';
 const Carts = () => {
   const cartStore = useSelector((state) => state.cartSliceReducer.cart);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
- 
+  console.log(cartStore)
+
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('accessToken'); // Kiểm tra token trong localStorage
     if (!isAuthenticated) {
-      navigate('/login'); 
+      navigate('/login');
     }
   }, [navigate]);
 
   const handleOrderSubmit = async () => {
     try {
+      const userLogin = JSON.parse(localStorage.getItem('userLogin'))
+      console.log(userLogin)
       const orderData = {
-        orderDetail: cartStore.map((item) => ({
-          productId: item.id,
-          quantity: item.quantity,
-        })),
+        orderDetail: cartStore.map((item) => (
+            {
+              productId: item.id,
+              quantity: item.quantity,
+            }
+        )),
+        email: userLogin.email
       };
+      console.log(orderData)
 
       const response = await axios.post('https://shop.cyberlearn.vn/api/Users/order', orderData);
 
       console.log('Gửi đơn hàng thành công:', response.data);
       alert('Đơn hàng đã được gửi thành công!');
-      console.log('Gửi đơn hàng thành công:', response.data);
+      console.log('Gửi đơn hàng thành công:', response.data.content);
     } catch (error) {
       console.error('Lỗi khi gửi đơn hàng:', error);
     }
@@ -161,7 +168,7 @@ const Carts = () => {
         <button
           className="btn text-white px-4"
           style={{ background: '#f2994a' }}
-          onClick={handleOrderSubmit} 
+          onClick={handleOrderSubmit}
         >
           SUBMIT ORDER
         </button>

@@ -1,44 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [allProducts, setAllProducts] = useState([]); 
     const [sortOrder, setSortOrder] = useState('asc');
 
-  
-    const handleSearch = async () => {
+    // Hàm để tải toàn bộ sản phẩm
+    const fetchProducts = async () => {
         try {
             const response = await axios.get('https://shop.cyberlearn.vn/api/Product');
-            let products = response.data.content;
-
-           
-            products = products.filter(product =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-
-      
-            products = products.map(product => ({
-                ...product,
-                price: parseFloat(product.price) // Chuyển đổi price thành số
-            }));
-
-         
-            products = _.orderBy(products, ['price'], [sortOrder]);
-
-            setSearchResults(products);
+            setAllProducts(response.data.content); 
+            setSearchResults(response.data.content); 
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
+    useEffect(() => {
+        fetchProducts(); 
+    }, []);
+
+    const handleSearch = () => {
+        let filteredProducts = allProducts.filter(product =>
+            product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        filteredProducts = _.orderBy(filteredProducts, ['price'], [sortOrder]);
+
+        setSearchResults(filteredProducts);
+    };
 
     const handleSortOrderChange = (e) => {
         setSortOrder(e.target.value);
+        handleSearch(); 
     };
 
-   
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSearch(); 
@@ -55,7 +54,7 @@ const Search = () => {
                     className="form-control py-1 border-0 rounded-1 bg-body-secondary ps-2 mt-2 w-25 d-inline"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={handleKeyDown} // Thêm sự kiện onKeyDown để lắng nghe phím Enter
+                    onKeyDown={handleKeyDown} 
                 />
                 <button
                     className="rounded-pill btn py-1 px-4 text-white ms-4"
@@ -73,9 +72,10 @@ const Search = () => {
                     id="select"
                     className="form-select w-25 py-2 border-0 rounded-1 bg-body-secondary ps-2 mt-2"
                     onChange={handleSortOrderChange}
+                    value={sortOrder} 
                 >
-                    <option value="asc">Low to High</option>
-                    <option value="desc">High to Low</option>
+                    <option value="asc">Hight to Low</option>
+                    <option value="desc">Low to Hight</option>
                 </select>
             </div>
             <div className="row text-center">
@@ -86,7 +86,7 @@ const Search = () => {
                             <div className="img py-2" style={{ background: '#f8f8f8' }}>
                                 <img src={product.image} alt={product.name} width={250} />
                                 <div className="text-start pb-2 ms-4">
-                                    <h3>{product.name}</h3>
+                                    <h3 className='fs-5'>{product.name}</h3>
                                     <p className="d-inline">{product.shortDescription}</p>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@ const Search = () => {
                                     className="w-50 pt-3"
                                     style={{ background: '#dedddc', fontWeight: 600 }}
                                 >
-                                    {product.price}$
+                                    {product.price}$ 
                                 </span>
                             </div>
                         </div>

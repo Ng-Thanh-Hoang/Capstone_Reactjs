@@ -12,9 +12,8 @@ export default function LoginFacebook() {
             data: {
                 facebookToken: response.accessToken
             }
-
         }),
-        navigate('/profile')
+        navigate('/profile',)
         localStorage.setItem("accessToken", response.accessToken);
     };
 
@@ -22,7 +21,7 @@ export default function LoginFacebook() {
         <div>
             <FacebookLogin
                 appId="1087944499590107"
-                autoLoad={true}
+                autoLoad={false}
                 fields="name,email,picture"
                 callback={responseFacebook} />
         </div>
