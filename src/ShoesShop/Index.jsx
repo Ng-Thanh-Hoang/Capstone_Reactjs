@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import '../sass/index.scss';
 import { useSelector } from 'react-redux';
 
 const Index = () => {
   const cartStore = useSelector(state => state.cartSliceReducer.cart);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const storedToken = localStorage.getItem('accessToken');
+    return !!storedToken;
+  });
 
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken'); // Kiểm tra token trong localStorage
-    if (token) {
-      setIsLoggedIn(true); // Đặt trạng thái đăng nhập thành true nếu có token
-    }
-  }, []);
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    setIsLoggedIn(false);
+  }
+
 
   return (
     <>
@@ -30,16 +36,17 @@ const Index = () => {
               <i className="fa fa-shopping-cart text-secondary"></i>
               ({cartStore.length})
             </NavLink>
-
-            {/* Kiểm tra trạng thái đăng nhập và thay đổi giao diện */}
-            {isLoggedIn ? (
-              <NavLink to='/profile' className='ms-2 text-decoration-none text-white'>Profile</NavLink>
-            ) : (
-              <>
-                <NavLink to='/login' className='ms-2 text-decoration-none text-white'>Login</NavLink>
-                <NavLink to='/register' className='ms-2 text-decoration-none text-white'>Register</NavLink>
-              </>
-            )}
+            {
+              isLoggedIn ? (
+                <NavLink to="/login" className="ms-2 text-decoration-none text-white" onClick={handleLogout} >
+                  Logout
+                </NavLink>
+              ) : (
+                <NavLink to="/login" className="ms-2 text-decoration-none text-white" onClick={handleLogin}>
+                  Login
+                </NavLink>
+              )}
+            <NavLink to='/register' className='ms-2 text-decoration-none text-white'>Register</NavLink>
           </div>
         </header>
         <header className='header-nav pt-2'>
@@ -51,7 +58,7 @@ const Index = () => {
             <a href="#" className='text-black'>Sport</a>
           </nav>
         </header>
-      </header>
+      </header >
       <Outlet />
       <footer className='footer container'>
         <div className="row">

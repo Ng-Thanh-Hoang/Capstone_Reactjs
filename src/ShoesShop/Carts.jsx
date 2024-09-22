@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { changeQuantityProductAction, deleteProductAction } from '../redux/reducers/cartReducer';
 import { Table } from 'antd';
 import axios from 'axios';
+import AuthContext from '../redux/reducers/authContext';
 
 const Carts = () => {
   const cartStore = useSelector((state) => state.cartSliceReducer.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
 
   console.log(cartStore);
 
@@ -22,7 +24,7 @@ const Carts = () => {
     if (!isAuthenticated) {
       navigate('/login');
     }
-  }, [navigate]);
+  },[isLoggedIn,navigate]);
 
   const handleOrderSubmit = async () => {
     try {

@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
+import { NavLink } from 'react-router-dom';
 
 const Search = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-    const [allProducts, setAllProducts] = useState([]); 
+    const [allProducts, setAllProducts] = useState([]);
     const [sortOrder, setSortOrder] = useState('asc');
 
     // Hàm để tải toàn bộ sản phẩm
     const fetchProducts = async () => {
         try {
             const response = await axios.get('https://shop.cyberlearn.vn/api/Product');
-            setAllProducts(response.data.content); 
-            setSearchResults(response.data.content); 
+            setAllProducts(response.data.content);
+            setSearchResults(response.data.content);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
     useEffect(() => {
-        fetchProducts(); 
+        fetchProducts();
     }, []);
 
     const handleSearch = () => {
@@ -35,12 +36,12 @@ const Search = () => {
 
     const handleSortOrderChange = (e) => {
         setSortOrder(e.target.value);
-        handleSearch(); 
+        handleSearch();
     };
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleSearch(); 
+            handleSearch();
         }
     };
 
@@ -54,7 +55,7 @@ const Search = () => {
                     className="form-control py-1 border-0 rounded-1 bg-body-secondary ps-2 mt-2 w-25 d-inline"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={handleKeyDown} 
+                    onKeyDown={handleKeyDown}
                 />
                 <button
                     className="rounded-pill btn py-1 px-4 text-white ms-4"
@@ -72,7 +73,7 @@ const Search = () => {
                     id="select"
                     className="form-select w-25 py-2 border-0 rounded-1 bg-body-secondary ps-2 mt-2"
                     onChange={handleSortOrderChange}
-                    value={sortOrder} 
+                    value={sortOrder}
                 >
                     <option value="asc">Hight to Low</option>
                     <option value="desc">Low to Hight</option>
@@ -91,17 +92,13 @@ const Search = () => {
                                 </div>
                             </div>
                             <div className="price d-flex">
-                                <button
-                                    className="buy w-50 border-0 px-2 py-3"
-                                    style={{ background: '#9DE167', fontWeight: 400 }}
-                                >
-                                    Buy now
-                                </button>
+                                <NavLink to={`/detail/${product.id}`} className="buy w-50 border-0 px-2 py-3 text-decoration-none text-black" style={{ background: '#9DE167', fontWeight: 400 }}
+                                >Buy now</NavLink>
                                 <span
                                     className="w-50 pt-3"
                                     style={{ background: '#dedddc', fontWeight: 600 }}
                                 >
-                                    {product.price}$ 
+                                    {product.price}$
                                 </span>
                             </div>
                         </div>

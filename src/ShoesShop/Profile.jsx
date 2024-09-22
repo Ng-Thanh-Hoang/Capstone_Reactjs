@@ -32,7 +32,7 @@ const Profile = () => {
                 phone: userLogin.phone || '',
                 name: userLogin.name || '',
                 password: '',
-                gender: userLogin.gender || true, 
+                gender: userLogin.gender || true,
             });
         } catch (err) {
             console.error('Không thể lấy được thông tin profile:', err);
@@ -42,7 +42,7 @@ const Profile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setProfile({ ...profile, [name]: value }); 
+        setProfile({ ...profile, [name]: value });
     };
 
     // Hàm cập nhật profile
@@ -58,7 +58,6 @@ const Profile = () => {
                 },
                 data: profile,
             });
-
             alert('Cập nhật thông tin thành công!');
             console.log('Cập nhật thành công:', response.data);
         } catch (error) {
