@@ -1,16 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { changeQuantityProductAction, deleteProductAction } from '../redux/reducers/cartReducer';
 import { Table } from 'antd';
 import axios from 'axios';
-import AuthContext from '../redux/reducers/authContext';
 
-const Carts = () => {
+const Carts = (props) => {
   const cartStore = useSelector((state) => state.cartSliceReducer.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn } = props;
 
   console.log(cartStore);
 
