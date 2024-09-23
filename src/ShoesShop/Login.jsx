@@ -104,7 +104,8 @@ const Login = () => {
           <NavLink to="/register" className="text-decoration-none">Register now?</NavLink>
           <button className="ms-4 btn my-2 rounded rounded-pill text-white px-4 py-1.5" style={{ background: '#6200ee' }}>LOGIN</button>
         </div>
-        <LoginFacebook />
+        {/* <LoginFacebook /> */}
+        <button className='btn btn-primary rounded rounded-4'><i class="fab fa-facebook me-2"></i> Continue with Facebook</button>
       </form>
     </div>
   );
