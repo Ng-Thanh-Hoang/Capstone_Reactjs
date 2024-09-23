@@ -10,9 +10,8 @@ import Login from './ShoesShop/Login';
 import Search from './ShoesShop/Search';
 import Register from './ShoesShop/Register';
 import Profile from './ShoesShop/Profile';
-import AuthContext from './redux/reducers/authContext';
 
-
+const AuthContext = createContext();
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
