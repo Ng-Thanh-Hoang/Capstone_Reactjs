@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import LoginFacebook from './LoginFacebook';
 
 const Login = () => {
   const navigate = useNavigate();
